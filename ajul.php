@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Plugin Name: WP Ajul
+ * Plugin Name: Ajul
  *
  * Description: Create a guided tour around your site.
  *
@@ -16,6 +16,9 @@
 // Prevent direct access.
 if (!defined('ABSPATH'))
     exit;
+
+if (!defined('AJUL_PLUGIN_VERSION'))
+    define('AJUL_PLUGIN_VERSION', '0.1');
 
 if (!defined('AJUL_PLUGIN_DIR'))
     define('AJUL_PLUGIN_DIR', plugin_dir_path(__FILE__));
