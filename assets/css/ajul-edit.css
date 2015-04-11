@@ -1,0 +1,13 @@
+#ajulMetaboxHeader {
+    border-bottom: 1px solid #cdcdcd;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+#destinationFormDialog form label {
+    display: block;
+}
+
+#destinationFormDialog form .field {
+    margin-bottom: 20px;
+}
