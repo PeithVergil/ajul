@@ -15,6 +15,19 @@ class Plugin {
 
         // The plugin has been deactivated.
         register_deactivation_hook(__FILE__, array($this, 'deactivate'));
+
+        // Setup the text domain.
+        add_action('plugins_loaded', array($this, 'textdomain'));
+
+        // Register custom CSS and JS files.
+        require(AJUL_PLUGIN_DIR . 'lib/scripts.php');
+
+        // Register custom post types.
+        new Posttypes();
+
+        // Add custom meta boxes.
+        new Metabox\Destinations();
+
     }
 
     /**
@@ -27,5 +40,14 @@ class Plugin {
      * The deactivation hook.
      */
     public function deactivate() {
+    }
+
+    /**
+     * Loads the translation data for WordPress
+     *
+     * @since 1.0
+     */
+    public function textdomain() {
+        load_plugin_textdomain(AJUL_I18N, false, AJUL_PLUGIN_DIR . 'lang/');
     }
 }
