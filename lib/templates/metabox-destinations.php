@@ -17,7 +17,18 @@ UNDERSCORE TEMPLATES
 </script>
 
 <script type="text/template" id="ajulDestinationItemTemplate">
-    <h3><%= title %></h3>
+    <header>
+        <h3><%= title %></h3>
+
+        <ul class="links">
+            <li>
+                <a class="edit" href="javascript:;"><?php _e('edit', AJUL_I18N); ?></a>
+            </li>
+            <li>
+                <a class="delete" href="javascript:;"><?php _e('delete', AJUL_I18N); ?></a>
+            </li>
+        </ul>
+    </header>
     <div class="content">
         <%= content %>
     </div>
@@ -58,4 +69,9 @@ UNDERSCORE TEMPLATES
         <!-- Allow form submission by pressing the ENTER key. -->
         <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
     </form>
+</script>
+
+<script type="text/template" id="ajulDestinationDeleteTemplate">
+    <h3><%= title %></h3>
+    <p><%= content %></p>
 </script>

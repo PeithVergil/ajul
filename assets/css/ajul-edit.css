@@ -12,9 +12,52 @@
     border: 1px solid #0074a2;
 }
 
-#destinationList h3 {
+#destinationList header {
+    position: relative;
+}
+
+#destinationList header h3 {
     background-color: #0074a2;
     color: #ffffff;
+    padding: 8px 85px 8px 12px;
+}
+
+#destinationList header ul.links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 9px;
+    top: 9px;
+}
+
+#destinationList header ul.links li {
+    color: #ffffff;
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+#destinationList header ul.links li:before {
+    content: " | ";
+}
+
+#destinationList header ul.links li:first-child:before {
+    content: none;
+}
+
+#destinationList header ul.links a {
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+#destinationList header a {
+    text-decoration: none;
+}
+
+#destinationList header a:hover {
+    text-decoration: underline;
 }
 
 #destinationList .content,

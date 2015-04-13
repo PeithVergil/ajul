@@ -61,31 +61,31 @@
     });
 
     Collections.destinations = new Destinations([
-        // {
-        //     page: 'Home',
-        //     title: 'Lorem ipsum',
-        //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non orci sed lacus tempus venenatis eu vitae turpis. Suspendisse sit amet elit est.'
-        // },
-        // {
-        //     page: 'Home',
-        //     title: 'Vestibulum laoreet',
-        //     content: 'Vestibulum laoreet fermentum libero id congue. Nunc accumsan massa vel sem ultrices faucibus. Quisque sollicitudin ipsum eu justo gravida dapibus.'
-        // },
-        // {
-        //     page: 'About',
-        //     title: 'Morbi lacus',
-        //     content: 'Morbi lacus erat, mattis eget tincidunt vel, condimentum cursus lacus. Maecenas aliquam, est a auctor feugiat, dolor nisl accumsan leo, ut faucibus augue enim ac magna.'
-        // },
-        // {
-        //     page: 'About',
-        //     title: 'Phasellus sed lectus',
-        //     content: 'Phasellus sed lectus ac augue faucibus bibendum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut vel sollicitudin dolor.'
-        // },
-        // {
-        //     page: 'About',
-        //     title: 'In nulla mi',
-        //     content: 'In nulla mi, aliquet sit amet cursus ac, dignissim et urna. Fusce vehicula adipiscing blandit. Nulla lacinia, quam ac gravida dictum, elit purus pharetra mi, in venenatis sem purus convallis nisl.'
-        // },
+        {
+            page: 'Home',
+            title: 'Lorem ipsum',
+            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non orci sed lacus tempus venenatis eu vitae turpis. Suspendisse sit amet elit est.'
+        },
+        {
+            page: 'Home',
+            title: 'Vestibulum laoreet',
+            content: 'Vestibulum laoreet fermentum libero id congue. Nunc accumsan massa vel sem ultrices faucibus. Quisque sollicitudin ipsum eu justo gravida dapibus.'
+        },
+        {
+            page: 'About',
+            title: 'Morbi lacus',
+            content: 'Morbi lacus erat, mattis eget tincidunt vel, condimentum cursus lacus. Maecenas aliquam, est a auctor feugiat, dolor nisl accumsan leo, ut faucibus augue enim ac magna.'
+        },
+        {
+            page: 'About',
+            title: 'Phasellus sed lectus',
+            content: 'Phasellus sed lectus ac augue faucibus bibendum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut vel sollicitudin dolor.'
+        },
+        {
+            page: 'About',
+            title: 'In nulla mi',
+            content: 'In nulla mi, aliquet sit amet cursus ac, dignissim et urna. Fusce vehicula adipiscing blandit. Nulla lacinia, quam ac gravida dictum, elit purus pharetra mi, in venenatis sem purus convallis nisl.'
+        },
     ]);
 }(jQuery, this));
 
@@ -118,7 +118,7 @@
         },
 
         handleDestinationCreate: function() {
-            var formView = new Views.DestinationsFormView({
+            var formView = new Views.DestinationFormView({
                 title: AjulSettings.texts.formCreateTitle
             });
 
@@ -195,6 +195,11 @@
     });
 
     Views.DestinationItemView = Backbone.View.extend({
+        events: {
+            'click a.edit'  : 'handleUpdate',
+            'click a.delete': 'handleDelete',
+        },
+
         tagName: 'li',
 
         template: _.template($('script#ajulDestinationItemTemplate').html()),
@@ -206,9 +211,27 @@
 
             return this;
         },
+
+        handleUpdate: function(e) {
+            e.preventDefault();
+
+            console.log({
+                'update': this.model.get('title')
+            });
+        },
+
+        handleDelete: function(e) {
+            e.preventDefault();
+
+            var deleteConfirmView = new Views.DestinationDeleteView({
+                model: this.model
+            });
+
+            deleteConfirmView.render();
+        },
     });
 
-    Views.DestinationsFormView = Backbone.View.extend({
+    Views.DestinationFormView = Backbone.View.extend({
         id: 'destinationFormDialog',
 
         events: {
@@ -292,6 +315,70 @@
             e.preventDefault();
 
             this.handleClick();
+        },
+    });
+
+    Views.DestinationDeleteView = Backbone.View.extend({
+        id: 'destinationDeleteDialog',
+
+        template: _.template($('script#ajulDestinationDeleteTemplate').html()),
+
+        attributes: {
+            title: 'Confirm Delete'
+        },
+
+        initialize: function() {
+            _.bindAll(this, 'handleDelete', 'handleCancel', 'handleClose');
+        },
+
+        render: function() {
+            this.$el.html(this.template(this.model.toJSON()));
+
+            // Just append the dialog to the root.
+            $('body').append(this.$el);
+
+            this.$el.dialog({
+                title    : this.title,
+                fluid    : true,
+                modal    : true,
+                width    : '500',
+                height   : 'auto',
+                draggable: false,
+                resizable: false,
+                buttons: [
+                    {
+                        text: 'Delete',
+                        click: this.handleDelete
+                    },
+                    {
+                        text: 'Cancel',
+                        click: this.handleCancel
+                    },
+                ],
+                close: this.handleClose
+            });
+
+            return this;
+        },
+
+        remove: function() {
+            // Destroy the jQuery UI dialog object.
+            this.$el.dialog('destroy');
+
+            // Remove the element from the DOM.
+            Backbone.View.prototype.remove.call(this);
+        },
+
+        handleDelete: function() {
+            this.remove();
+        },
+
+        handleCancel: function() {
+            this.remove();
+        },
+
+        handleClose: function() {
+            this.remove();
         },
     });
 }(jQuery, this));
