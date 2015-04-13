@@ -9,7 +9,51 @@
 (function($, global) {
     var Models = Ajul.Models = {};
 
-    Models.Destination = Backbone.Model.extend({});
+    Models.Destination = Backbone.Model.extend({
+        url: function() {
+            return AjulSettings.ajax;
+        },
+
+        sync: function(method, model, options) {
+            switch(method) {
+                case 'create':
+                    var data = _.extend({
+                        action: AjulSettings.actions.destinationCreate,
+                        nonce: AjulSettings.nonces.destinationCreate,
+                        post: AjulSettings.post,
+                    }, model.toJSON());
+                    break;
+
+                case 'delete':
+                    var data = _.extend({
+                        action: AjulSettings.actions.destinationDelete,
+                        nonce: AjulSettings.nonces.destinationDelete,
+                        post: AjulSettings.post,
+                    }, model.toJSON());
+                    break;
+
+                default:
+                    return Backbone.sync.call(this, method, model, options);
+            }
+
+            var $request = $.post(this.url(), data);
+
+            if (!_.isUndefined(options.success))
+                $request.done(options.success);
+
+            if (!_.isUndefined(options.error))
+                $request.fail(options.error);
+
+            return $request;
+        },
+    });
+}(jQuery, this));
+
+//////////////////////////////////////////////////
+// COLLECTIONS
+//////////////////////////////////////////////////
+
+(function($, global) {
 }(jQuery, this));
 
 //////////////////////////////////////////////////
@@ -33,7 +77,7 @@
         },
 
         handleDestinationCreate: function() {
-            var formView = new Views.DestinationsFormView();
+            new Views.DestinationsFormView().render();
         },
     });
 
@@ -48,8 +92,6 @@
 
         initialize: function() {
             _.bindAll(this, 'handleClick', 'handleClose');
-
-            this.render();
         },
 
         render: function() {
@@ -61,15 +103,15 @@
             this.$el.dialog({
                 fluid    : true,
                 modal    : true,
-                width    : '400',
+                width    : '500',
                 height   : 'auto',
-                minWidth : 400,
-                maxWidth : 600,
-                minHeight: 400,
-                maxHeight: 600,
+                draggable: false,
+                resizable: false,
+                // minWidth : 400,
+                // maxWidth : 600,
                 buttons: [
                     {
-                        text: AjulSettings.texts.formCreateButton,
+                        text: AjulSettings.texts.formSaveButton,
                         icons: {
                             primary: 'ui-icon-plusthick'
                         },
@@ -83,20 +125,17 @@
         },
 
         handleClick: function() {
-            var $target = this.$('input#target');
-            var $prev   = this.$('input#prev');
-            var $next   = this.$('input#next');
-
             var destination = new Ajul.Models.Destination({
-                target: $target.val(),
-                prev  : $prev.val(),
-                next  : $next.val(),
+                page   : this.$('#page').val(),
+                element: this.$('#element').val(),
+                content: this.$('#content').val(),
             });
 
             destination.save(null, {
-                success: function(response) {
+                success: function(model, response) {
                     console.log('success...');
                     console.log(response);
+                    console.log(model);
                 },
             });
 

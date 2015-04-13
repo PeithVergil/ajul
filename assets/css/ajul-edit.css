@@ -4,10 +4,36 @@
     padding-bottom: 10px;
 }
 
+#destinationFormDialog {
+    overflow: hidden;
+}
+
 #destinationFormDialog form label {
     display: block;
 }
 
 #destinationFormDialog form .field {
     margin-bottom: 20px;
+}
+
+#destinationFormDialog form .help {
+    color: #666666;
+    font-size: 13px;
+    font-style: italic;
+    margin-bottom: 5px;
+    margin-top: 2px;
+}
+
+#destinationFormDialog form input,
+#destinationFormDialog form select,
+#destinationFormDialog form textarea {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+}
+
+#destinationFormDialog form textarea {
+    min-height: 120px;
 }
