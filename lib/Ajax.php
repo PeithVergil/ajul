@@ -34,7 +34,28 @@ class Ajax {
             ));
         }
 
-        wp_send_json_success($_POST);
+        $destinations = get_post_meta($post->ID, 'ajul_tour_destinations', true);
+
+        if (empty($destinations)) {
+            $destinations = array();
+        }
+
+        $destinations[] = $destination = array(
+            'page'    => $_POST['page'],
+            'title'   => $_POST['title'],
+            'content' => $_POST['content'],
+            'element' => $_POST['element'],
+        );
+
+        // $result = update_post_meta($post->ID, 'ajul_tour_destinations', $destinations);
+
+        // if (!$result) {
+        //     wp_send_json_error(array(
+        //         'message' => __('Could not add destination', AJUL_I18N)
+        //     ));
+        // }
+
+        wp_send_json_success($destination);
     }
 
     /**
