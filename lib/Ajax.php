@@ -63,6 +63,8 @@ class Ajax {
      */
     public function destination_delete() {
         $this->verify_request(self::DESTINATION_DELETE);
+
+        wp_send_json_success($_POST);
     }
 
     /**

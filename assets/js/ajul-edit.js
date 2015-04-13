@@ -132,6 +132,7 @@
             this.views = null;
 
             this.listenTo(this.collection, 'add', this.render);
+            this.listenTo(this.collection, 'destroy', this.render);
         },
 
         render: function() {
@@ -318,7 +319,18 @@
         },
 
         handleDelete: function() {
-            this.dialogClose();
+            var self = this;
+
+            self.model.destroy({
+                success: function(model, response) {
+                    if (!_.isUndefined(response) && !response.success) {
+                        alert(response.data.message);
+                    }
+
+                    self.dialogClose();
+                },
+                wait: true
+            });
         },
 
         handleCancel: function() {
