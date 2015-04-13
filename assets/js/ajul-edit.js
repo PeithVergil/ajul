@@ -274,7 +274,7 @@
                         alert(response.data.message);
                     }
 
-                    self.$el.dialog('close');
+                    self.dialogClose();
                 },
                 wait: true
             });
@@ -318,11 +318,11 @@
         },
 
         handleDelete: function() {
-            this.remove();
+            this.dialogClose();
         },
 
         handleCancel: function() {
-            this.remove();
+            this.dialogClose();
         },
     });
 }(jQuery, this));

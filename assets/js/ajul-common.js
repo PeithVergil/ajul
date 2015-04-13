@@ -53,6 +53,14 @@
             this.remove();
         },
 
+        dialogOpen: function() {
+            this.$el.dialog('open');
+        },
+
+        dialogClose: function() {
+            this.$el.dialog('close');
+        },
+
         dialogOptions: function() {
             return {};
         },
