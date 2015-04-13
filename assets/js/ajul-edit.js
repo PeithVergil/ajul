@@ -77,7 +77,11 @@
         },
 
         handleDestinationCreate: function() {
-            new Views.DestinationsFormView().render();
+            var formView = new Views.DestinationsFormView({
+                title: AjulSettings.texts.formCreateTitle
+            });
+
+            formView.render();
         },
     });
 
@@ -90,7 +94,13 @@
 
         template: _.template($('script#ajulDestinationFormTemplate').html()),
 
-        initialize: function() {
+        initialize: function(options) {
+            this.title = '';
+
+            if (!_.isUndefined(options) && !_.isUndefined(options.title)) {
+                this.title = options.title;
+            }
+
             _.bindAll(this, 'handleClick', 'handleClose');
         },
 
@@ -101,14 +111,13 @@
             $('body').append(this.$el);
 
             this.$el.dialog({
+                title    : this.title,
                 fluid    : true,
                 modal    : true,
                 width    : '500',
                 height   : 'auto',
                 draggable: false,
                 resizable: false,
-                // minWidth : 400,
-                // maxWidth : 600,
                 buttons: [
                     {
                         text: AjulSettings.texts.formSaveButton,

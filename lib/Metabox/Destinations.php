@@ -30,7 +30,7 @@ class Destinations extends Metabox {
      * @param $post WP_Post
      */
     public function render($post) {
-        include ( AJUL_PLUGIN_DIR . 'lib/templates/metabox-destinations.php' );
+        require(AJUL_PLUGIN_DIR . 'lib/templates/metabox-destinations.php');
     }
 
     /**
@@ -49,7 +49,9 @@ class Destinations extends Metabox {
                 'post' => $post->ID,
                 'ajax' => admin_url('admin-ajax.php'),
                 'texts' => array(
-                    'formSaveButton' => __('Save', AJUL_I18N)
+                    'formCreateTitle' => __('Create Destination', AJUL_I18N),
+                    'formUpdateTitle' => __('Update Destination', AJUL_I18N),
+                    'formSaveButton'  => __('Save', AJUL_I18N)
                 ),
                 'nonces' => array(
                     'destinationCreate' => wp_create_nonce(\Ajul\Ajax::DESTINATION_CREATE),
