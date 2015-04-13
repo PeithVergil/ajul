@@ -4,7 +4,6 @@
     </div>
 
     <div id="ajulMetaboxContent">
-        <p><?php _e('There are currently now destinations for this tour.', AJUL_I18N); ?></p>
     </div>
 </div>
 
@@ -13,6 +12,20 @@
 UNDERSCORE TEMPLATES
 ==================================================
 -->
+<script type="text/template" id="ajulDestinationEmptyTemplate">
+    <p><?php _e('There are currently now destinations for this tour.', AJUL_I18N); ?></p>
+</script>
+
+<script type="text/template" id="ajulDestinationItemTemplate">
+    <h3><%= title %></h3>
+    <div class="content">
+        <%= content %>
+    </div>
+    <div class="page">
+        <?php _e('Page', AJUL_I18N); ?>: <%= page %>
+    </div>
+</script>
+
 <script type="text/template" id="ajulDestinationFormTemplate">
     <form>
         <div class="field">
