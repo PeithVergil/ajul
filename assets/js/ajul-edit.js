@@ -54,6 +54,39 @@
 //////////////////////////////////////////////////
 
 (function($, global) {
+    var Collections = Ajul.Collections = {};
+
+    var Destinations = Backbone.Collection.extend({
+        model: Ajul.Models.Destination
+    });
+
+    Collections.destinations = new Destinations([
+        // {
+        //     page: 'Home',
+        //     title: 'Lorem ipsum',
+        //     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non orci sed lacus tempus venenatis eu vitae turpis. Suspendisse sit amet elit est.'
+        // },
+        // {
+        //     page: 'Home',
+        //     title: 'Vestibulum laoreet',
+        //     content: 'Vestibulum laoreet fermentum libero id congue. Nunc accumsan massa vel sem ultrices faucibus. Quisque sollicitudin ipsum eu justo gravida dapibus.'
+        // },
+        // {
+        //     page: 'About',
+        //     title: 'Morbi lacus',
+        //     content: 'Morbi lacus erat, mattis eget tincidunt vel, condimentum cursus lacus. Maecenas aliquam, est a auctor feugiat, dolor nisl accumsan leo, ut faucibus augue enim ac magna.'
+        // },
+        // {
+        //     page: 'About',
+        //     title: 'Phasellus sed lectus',
+        //     content: 'Phasellus sed lectus ac augue faucibus bibendum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut vel sollicitudin dolor.'
+        // },
+        // {
+        //     page: 'About',
+        //     title: 'In nulla mi',
+        //     content: 'In nulla mi, aliquet sit amet cursus ac, dignissim et urna. Fusce vehicula adipiscing blandit. Nulla lacinia, quam ac gravida dictum, elit purus pharetra mi, in venenatis sem purus convallis nisl.'
+        // },
+    ]);
 }(jQuery, this));
 
 //////////////////////////////////////////////////
@@ -68,12 +101,20 @@
             'click #destinationCreate': 'handleDestinationCreate',
         },
 
-        initialize: function() {
+        render: function() {
             this.$('#destinationCreate').button({
                 icons: {
                     primary: 'ui-icon-plusthick'
                 }
             });
+
+            var destinationListView = new Views.DestinationListView({
+                collection: Ajul.Collections.destinations
+            });
+
+            this.$('#ajulMetaboxContent').append(destinationListView.render().$el);
+
+            return this;
         },
 
         handleDestinationCreate: function() {
@@ -82,6 +123,88 @@
             });
 
             formView.render();
+        },
+    });
+
+    Views.DestinationListView = Backbone.View.extend({
+        id: 'destinationList',
+
+        tagName: 'ul',
+
+        initialize: function() {
+            // Child views
+            this.views = null;
+
+            this.listenTo(this.collection, 'add', this.render);
+        },
+
+        render: function() {
+            this.removeViews();
+
+            if (this.collection.isEmpty()) {
+                this.createEmpty();
+            } else {
+                this.createItems();
+            }
+
+            this.$el.html(
+                _.map(this.views, function(view) {
+                    return view.render().$el;
+                })
+            );
+
+            return this;
+        },
+
+        removeViews: function() {
+            if (_.isNull(this.views))
+                return;
+
+            _.each(this.views, function(view) {
+                view.remove();
+            });
+
+            this.views = null;
+        },
+
+        createEmpty: function() {
+            this.views = [
+                new Views.DestinationEmptyView()
+            ];
+        },
+
+        createItems: function() {
+            this.views = this.collection.map(function(item) {
+                return new Views.DestinationItemView({
+                    model: item
+                });
+            });
+        },
+    });
+
+    Views.DestinationEmptyView = Backbone.View.extend({
+        tagName: 'li',
+
+        template: _.template($('script#ajulDestinationEmptyTemplate').html()),
+
+        render: function() {
+            this.$el.html(this.template());
+
+            return this;
+        },
+    });
+
+    Views.DestinationItemView = Backbone.View.extend({
+        tagName: 'li',
+
+        template: _.template($('script#ajulDestinationItemTemplate').html()),
+
+        className: 'destinationItem',
+
+        render: function() {
+            this.$el.html(this.template(this.model.toJSON()));
+
+            return this;
         },
     });
 
@@ -134,24 +257,34 @@
         },
 
         handleClick: function() {
+            var self = this;
+
             var destination = new Ajul.Models.Destination({
-                page   : this.$('#page').val(),
-                element: this.$('#element').val(),
-                content: this.$('#content').val(),
+                page   : self.$('#page').val(),
+                title  : self.$('#title').val(),
+                content: self.$('#content').val(),
+                element: self.$('#element').val(),
             });
 
             destination.save(null, {
                 success: function(model, response) {
-                    console.log('success...');
-                    console.log(response);
-                    console.log(model);
-                },
-            });
+                    if (response.success) {
+                        Ajul.Collections.destinations.add(destination);
+                    } else {
+                        alert(response.data.message);
+                    }
 
-            this.$el.dialog('close');
+                    self.$el.dialog('close');
+                },
+                wait: true
+            });
         },
 
         handleClose: function() {
+            // Destroy the jQuery UI dialog object.
+            this.$el.dialog('destroy');
+
+            // Remove element from DOM.
             this.remove();
         },
 
@@ -169,8 +302,10 @@
 
 (function($, global) {
     $(function() {
-        new Ajul.Views.DestinationsMetaboxView({
+        var destinationsMetaboxView = new Ajul.Views.DestinationsMetaboxView({
             el: $('div#ajulMetaboxDestinations')
         });
+
+        destinationsMetaboxView.render();
     });
 }(jQuery, this));
