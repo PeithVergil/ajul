@@ -1,7 +1,3 @@
-(function($, global) {
-    global.Ajul = global.Ajul || {};
-}(jQuery, this));
-
 //////////////////////////////////////////////////
 // MODELS
 //////////////////////////////////////////////////
@@ -94,7 +90,7 @@
 //////////////////////////////////////////////////
 
 (function($, global) {
-    var Views = Ajul.Views = {};
+    var Views = Ajul.Views = Ajul.Views || {};
 
     Views.DestinationsMetaboxView = Backbone.View.extend({
         events: {
@@ -231,7 +227,7 @@
         },
     });
 
-    Views.DestinationFormView = Backbone.View.extend({
+    Views.DestinationFormView = Ajul.Views.DialogView.extend({
         id: 'destinationFormDialog',
 
         events: {
@@ -241,29 +237,13 @@
         template: _.template($('script#ajulDestinationFormTemplate').html()),
 
         initialize: function(options) {
-            this.title = '';
+            Ajul.Views.DialogView.prototype.initialize.apply(this, arguments);
 
-            if (!_.isUndefined(options) && !_.isUndefined(options.title)) {
-                this.title = options.title;
-            }
-
-            _.bindAll(this, 'handleClick', 'handleClose');
+            _.bindAll(this, 'handleClick');
         },
 
-        render: function() {
-            this.$el.html(this.template());
-
-            // Just append the dialog to the root.
-            $('body').append(this.$el);
-
-            this.$el.dialog({
-                title    : this.title,
-                fluid    : true,
-                modal    : true,
-                width    : '500',
-                height   : 'auto',
-                draggable: false,
-                resizable: false,
+        dialogOptions: function() {
+            return {
                 buttons: [
                     {
                         text: AjulSettings.texts.formSaveButton,
@@ -272,11 +252,8 @@
                         },
                         click: this.handleClick
                     }
-                ],
-                close: this.handleClose
-            });
-
-            return this;
+                ]
+            };
         },
 
         handleClick: function() {
@@ -303,14 +280,6 @@
             });
         },
 
-        handleClose: function() {
-            // Destroy the jQuery UI dialog object.
-            this.$el.dialog('destroy');
-
-            // Remove element from DOM.
-            this.remove();
-        },
-
         handleSubmit: function(e) {
             e.preventDefault();
 
@@ -318,7 +287,7 @@
         },
     });
 
-    Views.DestinationDeleteView = Backbone.View.extend({
+    Views.DestinationDeleteView = Ajul.Views.DialogView.extend({
         id: 'destinationDeleteDialog',
 
         template: _.template($('script#ajulDestinationDeleteTemplate').html()),
@@ -328,23 +297,13 @@
         },
 
         initialize: function() {
-            _.bindAll(this, 'handleDelete', 'handleCancel', 'handleClose');
+            Ajul.Views.DialogView.prototype.initialize.apply(this, arguments);
+
+            _.bindAll(this, 'handleDelete', 'handleCancel');
         },
 
-        render: function() {
-            this.$el.html(this.template(this.model.toJSON()));
-
-            // Just append the dialog to the root.
-            $('body').append(this.$el);
-
-            this.$el.dialog({
-                title    : this.title,
-                fluid    : true,
-                modal    : true,
-                width    : '500',
-                height   : 'auto',
-                draggable: false,
-                resizable: false,
+        dialogOptions: function() {
+            return {
                 buttons: [
                     {
                         text: 'Delete',
@@ -354,19 +313,8 @@
                         text: 'Cancel',
                         click: this.handleCancel
                     },
-                ],
-                close: this.handleClose
-            });
-
-            return this;
-        },
-
-        remove: function() {
-            // Destroy the jQuery UI dialog object.
-            this.$el.dialog('destroy');
-
-            // Remove the element from the DOM.
-            Backbone.View.prototype.remove.call(this);
+                ]
+            };
         },
 
         handleDelete: function() {
@@ -374,10 +322,6 @@
         },
 
         handleCancel: function() {
-            this.remove();
-        },
-
-        handleClose: function() {
             this.remove();
         },
     });

@@ -21,10 +21,16 @@ add_action('admin_enqueue_scripts', 'Ajul\register_styles');
  * @since 0.1
  */
 function register_scripts() {
-    $ajulEditDependencies = array(
+    $ajulCommonDependencies = array(
         'jquery-ui-button',
         'jquery-ui-dialog',
         'backbone'
+    );
+
+    wp_register_script('ajul-common', AJUL_PLUGIN_URL . 'assets/js/ajul-common.js', $ajulCommonDependencies, AJUL_PLUGIN_VERSION, true);
+
+    $ajulEditDependencies = array(
+        'ajul-common'
     );
 
     wp_register_script('ajul-edit', AJUL_PLUGIN_URL . 'assets/js/ajul-edit.js', $ajulEditDependencies, AJUL_PLUGIN_VERSION, true);
