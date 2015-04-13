@@ -22,6 +22,9 @@ class Plugin {
         // Register custom CSS and JS files.
         require(AJUL_PLUGIN_DIR . 'lib/scripts.php');
 
+        // Add custom AJAX handlers.
+        new Ajax();
+
         // Register custom post types.
         new Posttypes();
 
