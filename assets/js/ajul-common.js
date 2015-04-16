@@ -4,8 +4,23 @@
 
 (function($, global) {
     var Views = Ajul.Views = Ajul.Views || {};
+
+    Views.TemplateView = Backbone.View.extend({
+        render: function() {
+            this.$el.html(this.template(this.templateData()));
+
+            return this;
+        },
+
+        templateData: function() {
+            if (_.isUndefined(this.model))
+                return null;
+
+            return this.model.toJSON();
+        },
+    });
     
-    Views.DialogView = Backbone.View.extend({
+    Views.DialogView = Views.TemplateView.extend({
         initialize: function(options) {
             this.title = '';
 
@@ -17,12 +32,7 @@
         },
 
         render: function() {
-            var data = null;
-
-            if (!_.isUndefined(this.model))
-                var data = this.model.toJSON();
-
-            this.$el.html(this.template(data));
+            Views.TemplateView.prototype.render.call(this);
 
             // Just append the dialog to the root.
             $('body').append(this.$el);
