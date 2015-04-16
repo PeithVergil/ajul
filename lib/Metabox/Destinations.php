@@ -61,8 +61,20 @@ class Destinations extends Metabox {
                     'destinationCreate' => \Ajul\Ajax::DESTINATION_CREATE,
                     'destinationDelete' => \Ajul\Ajax::DESTINATION_DELETE,
                 ),
+                'destinations' => $this->get_destinations()
             ));
         }
+    }
+
+    private function get_destinations() {
+        global $post;
+
+        $destinations = get_post_meta($post->ID, 'ajul_tour_destinations', true);
+
+        if (empty($destinations))
+            return array();
+
+        return $destinations;
     }
 
 }
