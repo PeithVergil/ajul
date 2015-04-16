@@ -56,33 +56,7 @@
         model: Ajul.Models.Destination
     });
 
-    Collections.destinations = new Destinations([
-        {
-            page: 'Home',
-            title: 'Lorem ipsum',
-            content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non orci sed lacus tempus venenatis eu vitae turpis. Suspendisse sit amet elit est.'
-        },
-        {
-            page: 'Home',
-            title: 'Vestibulum laoreet',
-            content: 'Vestibulum laoreet fermentum libero id congue. Nunc accumsan massa vel sem ultrices faucibus. Quisque sollicitudin ipsum eu justo gravida dapibus.'
-        },
-        {
-            page: 'About',
-            title: 'Morbi lacus',
-            content: 'Morbi lacus erat, mattis eget tincidunt vel, condimentum cursus lacus. Maecenas aliquam, est a auctor feugiat, dolor nisl accumsan leo, ut faucibus augue enim ac magna.'
-        },
-        {
-            page: 'About',
-            title: 'Phasellus sed lectus',
-            content: 'Phasellus sed lectus ac augue faucibus bibendum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut vel sollicitudin dolor.'
-        },
-        {
-            page: 'About',
-            title: 'In nulla mi',
-            content: 'In nulla mi, aliquet sit amet cursus ac, dignissim et urna. Fusce vehicula adipiscing blandit. Nulla lacinia, quam ac gravida dictum, elit purus pharetra mi, in venenatis sem purus convallis nisl.'
-        },
-    ]);
+    Collections.destinations = new Destinations(AjulSettings.destinations);
 }(jQuery, this));
 
 //////////////////////////////////////////////////
@@ -179,19 +153,7 @@
         },
     });
 
-    Views.DestinationEmptyView = Backbone.View.extend({
-        tagName: 'li',
-
-        template: _.template($('script#ajulDestinationEmptyTemplate').html()),
-
-        render: function() {
-            this.$el.html(this.template());
-
-            return this;
-        },
-    });
-
-    Views.DestinationItemView = Backbone.View.extend({
+    Views.DestinationItemView = Ajul.Views.TemplateView.extend({
         events: {
             'click a.edit'  : 'handleUpdate',
             'click a.delete': 'handleDelete',
@@ -202,12 +164,6 @@
         template: _.template($('script#ajulDestinationItemTemplate').html()),
 
         className: 'destinationItem',
-
-        render: function() {
-            this.$el.html(this.template(this.model.toJSON()));
-
-            return this;
-        },
 
         handleUpdate: function(e) {
             e.preventDefault();
@@ -226,6 +182,11 @@
 
             deleteConfirmView.render();
         },
+    });
+
+    Views.DestinationEmptyView = Ajul.Views.TemplateView.extend({
+        tagName: 'li',
+        template: _.template($('script#ajulDestinationEmptyTemplate').html()),
     });
 
     Views.DestinationFormView = Ajul.Views.DialogView.extend({
@@ -260,19 +221,23 @@
         handleClick: function() {
             var self = this;
 
-            var destination = new Ajul.Models.Destination({
+            var data = {
                 page   : self.$('#page').val(),
                 title  : self.$('#title').val(),
                 content: self.$('#content').val(),
                 element: self.$('#element').val(),
-            });
+            };
 
-            destination.save(null, {
+            Ajul.Collections.destinations.create(data, {
                 success: function(model, response) {
+                    var data = response.data;
+
                     if (response.success) {
-                        Ajul.Collections.destinations.add(destination);
+                        model.set({
+                            id: data.id
+                        });
                     } else {
-                        alert(response.data.message);
+                        alert(data.message);
                     }
 
                     self.dialogClose();
@@ -297,22 +262,16 @@
             title: 'Confirm Delete'
         },
 
-        initialize: function() {
-            Ajul.Views.DialogView.prototype.initialize.apply(this, arguments);
-
-            _.bindAll(this, 'handleDelete', 'handleCancel');
-        },
-
         dialogOptions: function() {
             return {
                 buttons: [
                     {
                         text: 'Delete',
-                        click: this.handleDelete
+                        click: _.bind(this.handleDelete, this)
                     },
                     {
                         text: 'Cancel',
-                        click: this.handleCancel
+                        click: _.bind(this.handleCancel, this)
                     },
                 ]
             };
