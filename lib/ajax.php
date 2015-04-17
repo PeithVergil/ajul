@@ -117,3 +117,5 @@ class Ajax {
         }
     }
 }
+
+new Ajax();
