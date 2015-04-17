@@ -31,10 +31,12 @@ function load_textdomain() {
 
 add_action('plugins_loaded', 'Ajul\load_textdomain');
 
-/**
- * Initialize the admin.
- */
-require(AJUL_PLUGIN_DIR . 'lib/Admin/init.php');
+if (is_admin()) {
+    /**
+     * Initialize the admin.
+     */
+    require(AJUL_PLUGIN_DIR . 'lib/Admin/init.php');
+}
 
 /**
  * Register custom CSS and JS files.
