@@ -29,9 +29,12 @@ if (!defined('AJUL_PLUGIN_URL'))
 if (!defined('AJUL_I18N'))
     define('AJUL_I18N', 'ajul');
 
-require AJUL_PLUGIN_DIR . 'vendor/autoload.php';
+/**
+ * The class auto loader.
+ */
+require(AJUL_PLUGIN_DIR . 'vendor/autoload.php');
 
 /**
  * Initialize the plugin.
  */
-$ajul = new Ajul\Plugin();
+require(AJUL_PLUGIN_DIR . 'lib/init.php');
