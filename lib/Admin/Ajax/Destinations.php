@@ -49,10 +49,11 @@ class Destinations extends \Ajul\Ajax\AjaxHandler {
         }
 
         $destination = array(
-            'page'    => $_POST['page'],
-            'title'   => $_POST['title'],
-            'content' => $_POST['content'],
-            'element' => $_POST['element'],
+            'page'      => $_POST['page'],
+            'title'     => $_POST['title'],
+            'target'    => $_POST['target'],
+            'content'   => $_POST['content'],
+            'placement' => $_POST['placement'],
         );
 
         // Just hash the values and use it as the ID.

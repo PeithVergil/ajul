@@ -1,3 +1,8 @@
+<?php
+// Prevent direct access.
+if (!defined('ABSPATH'))
+    exit;
+?>
 <div id="ajulMetaboxDestinations">
     <div id="ajulMetaboxHeader">
         <button type="button" id="destinationCreate"><?php _e('Add Destination', AJUL_I18N); ?></button>
@@ -33,7 +38,7 @@ UNDERSCORE TEMPLATES
         <%= content %>
     </div>
     <div class="page">
-        <?php _e('Page', AJUL_I18N); ?>: <%= page %>
+        <?php _e('Target', AJUL_I18N); ?>: <%= target %>
     </div>
 </script>
 
@@ -55,14 +60,23 @@ UNDERSCORE TEMPLATES
             <label for="content">Content</label>
             <textarea id="content" name="content" class="text ui-widget-content ui-corner-all"></textarea>
         </div>
-
-        <hr />
-
         <div class="field">
-            <label for="element">Element ID</label>
-            <input type="text" id="element" name="element" class="text ui-widget-content ui-corner-all">
+            <label for="target">Element ID</label>
+            <input type="text" id="target" name="target" class="text ui-widget-content ui-corner-all">
             <p class="help">
-                <?php _e('To target a specific element on the page, provide the element\'s ID. Leave it blank if there is no target.', AJUL_I18N); ?>
+                <?php _e('Target a specific element on the page by providing the element\'s ID.', AJUL_I18N); ?>
+            </p>
+        </div>
+        <div class="field">
+            <label for="placement">Placement</label>
+            <select id="placement" name="placement">
+                <option value="top"><?php _e('Top', AJUL_I18N); ?></option>
+                <option value="left"><?php _e('Left', AJUL_I18N); ?></option>
+                <option value="right"><?php _e('Right', AJUL_I18N); ?></option>
+                <option value="bottom"><?php _e('Bottom', AJUL_I18N); ?></option>
+            </select>
+            <p class="help">
+                <?php _e('Select the placement of the content.', AJUL_I18N); ?>
             </p>
         </div>
 

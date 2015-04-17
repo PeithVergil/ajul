@@ -222,10 +222,11 @@
             var self = this;
 
             var data = {
-                page   : self.$('#page').val(),
-                title  : self.$('#title').val(),
-                content: self.$('#content').val(),
-                element: self.$('#element').val(),
+                page     : self.$('#page').val(),
+                title    : self.$('#title').val(),
+                target   : self.$('#target').val(),
+                content  : self.$('#content').val(),
+                placement: self.$('#placement').val(),
             };
 
             Ajul.Collections.destinations.create(data, {
