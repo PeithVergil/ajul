@@ -7,5 +7,12 @@ if (!defined('ABSPATH'))
 // Register custom CSS and JS files.
 require(AJUL_PLUGIN_DIR . 'lib/Admin/scripts.php');
 
-// Add custom meta boxes.
+/**
+ * Register custom AJAX handlers.
+ */
+new Ajax\Destinations();
+
+/**
+ * Add custom meta boxes.
+ */
 new Metabox\Destinations();

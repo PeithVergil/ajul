@@ -54,12 +54,12 @@ class Destinations extends Metabox {
                     'formSaveButton'  => __('Save', AJUL_I18N)
                 ),
                 'nonces' => array(
-                    'destinationCreate' => wp_create_nonce(\Ajul\Ajax::DESTINATION_CREATE),
-                    'destinationDelete' => wp_create_nonce(\Ajul\Ajax::DESTINATION_DELETE),
+                    'destinationCreate' => wp_create_nonce(\Ajul\Admin\Ajax\Destinations::CREATE),
+                    'destinationDelete' => wp_create_nonce(\Ajul\Admin\Ajax\Destinations::DELETE),
                 ),
                 'actions' => array(
-                    'destinationCreate' => \Ajul\Ajax::DESTINATION_CREATE,
-                    'destinationDelete' => \Ajul\Ajax::DESTINATION_DELETE,
+                    'destinationCreate' => \Ajul\Admin\Ajax\Destinations::CREATE,
+                    'destinationDelete' => \Ajul\Admin\Ajax\Destinations::DELETE,
                 ),
                 'destinations' => $this->get_destinations()
             ));
