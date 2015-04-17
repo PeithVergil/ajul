@@ -39,6 +39,11 @@ if (is_admin()) {
 }
 
 /**
+ * Register custom shortcodes.
+ */
+require(AJUL_PLUGIN_DIR . 'lib/shortcodes.php');
+
+/**
  * Register custom CSS and JS files.
  */
 require(AJUL_PLUGIN_DIR . 'lib/scripts.php');
