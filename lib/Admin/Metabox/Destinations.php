@@ -1,4 +1,4 @@
-<?php namespace Ajul\Metabox;
+<?php namespace Ajul\Admin\Metabox;
 
 // Prevent direct access.
 if (!defined('ABSPATH'))
