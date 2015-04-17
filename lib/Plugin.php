@@ -26,7 +26,7 @@ class Plugin {
         new Ajax();
 
         // Register custom post types.
-        new Posttypes();
+        require(AJUL_PLUGIN_DIR . 'lib/types.php');
 
         // Add custom meta boxes.
         new Metabox\Destinations();
