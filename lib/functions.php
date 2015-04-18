@@ -42,10 +42,11 @@ function create_tour($atts) {
     wp_enqueue_script('ajul-tour');
 
     wp_localize_script('ajul-tour', 'AjulTourSettings', array(
-        'tourTitle' => $post->post_title,
-        'tourName'  => $post->post_name,
-        'steps'     => $steps,
-        'start'     => $start,
+        'tour' => array(
+            'id'    => $post->post_name,
+            'steps' => $steps
+        ),
+        'start' => $start
     ));
 
     include (AJUL_PLUGIN_DIR . 'lib/templates/shortcode-ajul-tour.php');

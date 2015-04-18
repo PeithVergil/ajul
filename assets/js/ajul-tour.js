@@ -1,9 +1,6 @@
 (function($, global) {
-    function AjulTour() {
-        this.tour = {
-            id   : AjulTourSettings.tourName,
-            steps: AjulTourSettings.steps,
-        };
+    function AjulTour(tour) {
+        this.tour = tour;
     }
 
     AjulTour.prototype.start = function() {
@@ -11,20 +8,18 @@
         hopscotch.startTour(this.tour);
     };
 
-    global.ajulTour = new AjulTour();
+    global.ajulTour = new AjulTour(AjulTourSettings.tour);
 }(jQuery, this));
 
 (function($, global) {
-    $(function() {console.log(AjulTourSettings);
-        if (AjulTourSettings.start) {
+    $(function() {
+        var $startTourButton = $('#ajul-tour-start').click(function(e) {
+            e.preventDefault();
+
             ajulTour.start();
-        } else {
-            $('#ajul-tour-start').click(function(e) {
-                e.preventDefault();
+        });
 
-                ajulTour.start();
-            });
-        }
-
+        if (AjulTourSettings.start)
+            $startTourButton.click();
     });
 }(jQuery, this));
