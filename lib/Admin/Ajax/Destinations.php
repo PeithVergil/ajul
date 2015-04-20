@@ -10,6 +10,7 @@ if (!defined('ABSPATH'))
 class Destinations extends \Ajul\Ajax\AjaxHandler {
 
     const CREATE = 'destination_create';
+    const UPDATE = 'destination_update';
     const DELETE = 'destination_delete';
 
     /**
@@ -17,6 +18,7 @@ class Destinations extends \Ajul\Ajax\AjaxHandler {
      */
     function __construct() {
         add_action('wp_ajax_' . self::CREATE, array($this, 'destination_create'));
+        add_action('wp_ajax_' . self::UPDATE, array($this, 'destination_update'));
         add_action('wp_ajax_' . self::DELETE, array($this, 'destination_delete'));
     }
 
@@ -63,6 +65,51 @@ class Destinations extends \Ajul\Ajax\AjaxHandler {
         }
 
         wp_send_json_success($destination);
+    }
+
+    /**
+     * The AJAX handler for updating a destination.
+     */
+    public function destination_update() {
+        $this->verify_request(self::UPDATE);
+
+        $tour = get_post($_POST['post']);
+
+        if (!$tour) {
+            wp_send_json_error(array(
+                'message' => __('Tour not found', AJUL_I18N)
+            ));
+        }
+
+        $destinations = get_post_meta($tour->ID, 'ajul_tour_destinations', true);
+
+        if (empty($destinations)) {
+            wp_send_json_error(array(
+                'message' => __('No destination to update', AJUL_I18N)
+            ));
+        }
+
+        $temp = array();
+        $dest = array();
+
+        foreach ($destinations as $destination) {
+            if ($destination['id'] === $_POST['id']) {
+                $temp[] = $dest = array_merge($destination, array(
+                    'title'     => $_POST['title'],
+                    'target'    => $_POST['target'],
+                    'content'   => $_POST['content'],
+                    'placement' => $_POST['placement'],
+                ));
+
+                continue;
+            }
+            
+            $temp[] = $destination;
+        }
+
+        update_post_meta($tour->ID, 'ajul_tour_destinations', $temp);
+
+        wp_send_json_success($dest);
     }
 
     /**

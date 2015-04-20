@@ -55,10 +55,12 @@ class Destinations extends Metabox {
                 ),
                 'nonces' => array(
                     'destinationCreate' => wp_create_nonce(\Ajul\Admin\Ajax\Destinations::CREATE),
+                    'destinationUpdate' => wp_create_nonce(\Ajul\Admin\Ajax\Destinations::UPDATE),
                     'destinationDelete' => wp_create_nonce(\Ajul\Admin\Ajax\Destinations::DELETE),
                 ),
                 'actions' => array(
                     'destinationCreate' => \Ajul\Admin\Ajax\Destinations::CREATE,
+                    'destinationUpdate' => \Ajul\Admin\Ajax\Destinations::UPDATE,
                     'destinationDelete' => \Ajul\Admin\Ajax\Destinations::DELETE,
                 ),
                 'destinations' => $this->get_destinations()

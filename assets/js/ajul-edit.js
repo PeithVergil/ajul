@@ -20,6 +20,14 @@
                     }, model.toJSON());
                     break;
 
+                case 'update':
+                    var data = _.extend({
+                        action: AjulSettings.actions.destinationUpdate,
+                        nonce: AjulSettings.nonces.destinationUpdate,
+                        post: AjulSettings.post,
+                    }, model.toJSON());
+                    break;
+
                 case 'delete':
                     var data = _.extend({
                         action: AjulSettings.actions.destinationDelete,
@@ -168,9 +176,12 @@
         handleUpdate: function(e) {
             e.preventDefault();
 
-            console.log({
-                'update': this.model.get('title')
+            var formView = new Views.DestinationFormView({
+                title: AjulSettings.texts.formUpdateTitle,
+                model: this.model
             });
+
+            formView.render();
         },
 
         handleDelete: function(e) {
@@ -219,6 +230,21 @@
         },
 
         handleClick: function() {
+            // If no model is attached to this view, assume
+            // the user is trying to create a new destination.
+            if (_.isUndefined(this.model))
+                this.doCreate();
+            else
+                this.doUpdate();
+        },
+
+        handleSubmit: function(e) {
+            e.preventDefault();
+
+            this.handleClick();
+        },
+
+        doCreate: function() {
             var self = this;
 
             var data = {
@@ -246,10 +272,26 @@
             });
         },
 
-        handleSubmit: function(e) {
-            e.preventDefault();
+        doUpdate: function() {
+            var self = this;
 
-            this.handleClick();
+            var data = {
+                title    : self.$('#destTitle').val(),
+                target   : self.$('#destTarget').val(),
+                content  : self.$('#destContent').val(),
+                placement: self.$('#destPlacement').val(),
+            };
+
+            this.model.save(data, {
+                success: function(model, response) {
+                    if (!_.isUndefined(response) && !_.isUndefined(response.data) && !response.success) {
+                        alert(response.data.message);
+                    }
+
+                    self.dialogClose();
+                },
+                wait: true
+            });
         },
     });
 
