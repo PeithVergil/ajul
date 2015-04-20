@@ -3,4 +3,6 @@
 if (!defined('ABSPATH'))
     exit;
 ?>
-<a id="ajul-tour-start" href="javascript:;"><?php _e($attributes['text'], AJUL_I18N); ?></a>
+<a class="ajul-tour-start" data-ajul-tour="<?php echo $post->ID; ?>" href="javascript:;">
+    <?php _e($attributes['text'], AJUL_I18N); ?>
+</a>

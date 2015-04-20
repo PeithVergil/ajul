@@ -4,6 +4,8 @@
 if (!defined('ABSPATH'))
     exit;
 
+$_ajulToursCache = array();
+
 function create_tour($atts) {
     $attributes = shortcode_atts(array(
         'id'    => null,
@@ -41,12 +43,20 @@ function create_tour($atts) {
     wp_enqueue_style('ajul-tour');
     wp_enqueue_script('ajul-tour');
 
+    global $wp_scripts, $_ajulToursCache;
+
+    // Empty out the previous data so we don't get
+    // multiple data declarations in the front-end.
+    $wp_scripts->add_data('ajul-tour', 'data', '' );
+
+    $_ajulToursCache[$post->ID] = array(
+        'id'    => $post->post_name,
+        'steps' => $steps,
+        'start' => $start,
+    );
+
     wp_localize_script('ajul-tour', 'AjulTourSettings', array(
-        'tour' => array(
-            'id'    => $post->post_name,
-            'steps' => $steps
-        ),
-        'start' => $start
+        'tours' => $_ajulToursCache
     ));
 
     include (AJUL_PLUGIN_DIR . 'lib/templates/shortcode-ajul-tour.php');

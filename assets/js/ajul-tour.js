@@ -8,18 +8,43 @@
         hopscotch.startTour(this.tour);
     };
 
-    global.ajulTour = new AjulTour(AjulTourSettings.tour);
+    function AjulTourManager(tours) {
+        var self = this;
+
+        self.tours = {};
+
+        $.each(tours, function(key, tour) {
+            self.tours[key] = new AjulTour(tour);
+        });
+    }
+
+    AjulTourManager.prototype.start = function(key) {
+        var tour = this.tours[key];
+
+        if (tour)
+            tour.start();
+    };
+
+    global.ajulTourManager = new AjulTourManager(AjulTourSettings.tours);
 }(jQuery, this));
 
 (function($, global) {
     $(function() {
-        var $startTourButton = $('#ajul-tour-start').click(function(e) {
+        $('.ajul-tour-start').click(function(e) {
             e.preventDefault();
 
-            ajulTour.start();
-        });
+            var tour = $(this).data('ajul-tour');
 
-        if (AjulTourSettings.start)
-            $startTourButton.click();
+            if (tour)
+                ajulTourManager.start(tour);
+        });
+        // var $startTourButton = $('#ajul-tour-start').click(function(e) {
+        //     e.preventDefault();
+
+        //     ajulTourManager.start();
+        // });
+
+        // if (AjulTourSettings.start)
+        //     $startTourButton.click();
     });
 }(jQuery, this));
