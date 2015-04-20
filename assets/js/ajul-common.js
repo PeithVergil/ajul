@@ -7,7 +7,7 @@
 
     Views.TemplateView = Backbone.View.extend({
         render: function() {
-            this.$el.html(this.template(this.templateData()));
+            this.$el.html(this.template({ data: this.templateData() }));
 
             return this;
         },
