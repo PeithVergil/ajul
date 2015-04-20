@@ -45,38 +45,30 @@ UNDERSCORE TEMPLATES
 <script type="text/template" id="ajulDestinationFormTemplate">
     <form>
         <div class="field">
-            <label for="page">Page</label>
-            <select id="page" name="page" class="text ui-widget-content ui-corner-all">
-                <?php foreach (get_pages() as $page): ?>
-                    <option value="<?php echo $page->ID; ?>"><?php echo $page->post_title; ?></option>
-                <?php endforeach; ?>
-            </select>
+            <label for="destTitle">Title</label>
+            <input type="text" id="destTitle" name="title" class="text ui-widget-content ui-corner-all">
         </div>
         <div class="field">
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title" class="text ui-widget-content ui-corner-all">
+            <label for="destContent">Content</label>
+            <textarea id="destContent" name="content" class="text ui-widget-content ui-corner-all"></textarea>
         </div>
         <div class="field">
-            <label for="content">Content</label>
-            <textarea id="content" name="content" class="text ui-widget-content ui-corner-all"></textarea>
-        </div>
-        <div class="field">
-            <label for="target">Element ID</label>
-            <input type="text" id="target" name="target" class="text ui-widget-content ui-corner-all">
+            <label for="destTarget">Element ID</label>
+            <input type="text" id="destTarget" name="target" class="text ui-widget-content ui-corner-all">
             <p class="help">
                 <?php _e('Target a specific element on the page by providing the element\'s ID.', AJUL_I18N); ?>
             </p>
         </div>
         <div class="field">
-            <label for="placement">Placement</label>
-            <select id="placement" name="placement">
+            <label for="destPlacement">Placement</label>
+            <select id="destPlacement" name="placement">
                 <option value="top"><?php _e('Top', AJUL_I18N); ?></option>
                 <option value="left"><?php _e('Left', AJUL_I18N); ?></option>
                 <option value="right"><?php _e('Right', AJUL_I18N); ?></option>
                 <option value="bottom"><?php _e('Bottom', AJUL_I18N); ?></option>
             </select>
             <p class="help">
-                <?php _e('Select the placement of the content.', AJUL_I18N); ?>
+                <?php _e('Select the placement of the content bubble.', AJUL_I18N); ?>
             </p>
         </div>
 

@@ -34,14 +34,6 @@ class Destinations extends \Ajul\Ajax\AjaxHandler {
             ));
         }
 
-        $page = get_post($_POST['page']);
-
-        if (!$page) {
-            wp_send_json_error(array(
-                'message' => __('Page not found', AJUL_I18N)
-            ));
-        }
-
         $destinations = get_post_meta($tour->ID, 'ajul_tour_destinations', true);
 
         if (empty($destinations)) {
@@ -49,7 +41,6 @@ class Destinations extends \Ajul\Ajax\AjaxHandler {
         }
 
         $destination = array(
-            'page'      => $_POST['page'],
             'title'     => $_POST['title'],
             'target'    => $_POST['target'],
             'content'   => $_POST['content'],
