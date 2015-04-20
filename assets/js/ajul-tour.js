@@ -20,7 +20,12 @@
         self.tours = {};
 
         $.each(tours, function(key, tour) {
-            self.tours[key] = new AjulTour(tour);
+            var ajulTour = new AjulTour(tour);
+
+            if (tour.start)
+                ajulTour.start();
+            
+            self.tours[key] = ajulTour;
         });
     }
 
