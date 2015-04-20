@@ -4,6 +4,12 @@
     }
 
     AjulTour.prototype.start = function() {
+        var state = hopscotch.getState();
+
+        // End the previous tour that was started.
+        if (state)
+            hopscotch.endTour(true);
+
         // Start the tour!
         hopscotch.startTour(this.tour);
     };
