@@ -16,7 +16,7 @@ $_ajulToursCache = array();
 function create_tour($options) {
     $attributes = shortcode_atts(array(
         'id'    => null,
-        'text'  => 'Start Tour',
+        'text'  => null,
         'start' => '0',
     ), $options);
 
@@ -46,6 +46,9 @@ function create_tour($options) {
         $start = true;
     else
         $start = false;
+
+    if (empty($attributes['text']))
+        $attributes['text'] = $post->post_title;
 
     wp_enqueue_style('ajul-tour');
     wp_enqueue_script('ajul-tour');
