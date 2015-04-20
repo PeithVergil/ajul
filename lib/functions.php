@@ -7,7 +7,7 @@ if (!defined('ABSPATH'))
 function create_tour($atts) {
     $attributes = shortcode_atts(array(
         'id'    => null,
-        'text'  => __('Start Tour', AJUL_I18N),
+        'text'  => 'Start Tour',
         'start' => '0',
     ), $atts);
 
