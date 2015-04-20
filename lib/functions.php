@@ -6,12 +6,19 @@ if (!defined('ABSPATH'))
 
 $_ajulToursCache = array();
 
-function create_tour($atts) {
+/**
+ * Create a link that is used for starting the tour.
+ *
+ * @param array $options The attributes attached to the [ajul-tour] shortcode.
+ *
+ * @since 0.1
+ */
+function create_tour($options) {
     $attributes = shortcode_atts(array(
         'id'    => null,
         'text'  => 'Start Tour',
         'start' => '0',
-    ), $atts);
+    ), $options);
 
     if (empty($attributes['id'])): ?>
         <p><?php _e('The "id" attribute is required.', AJUL_I18N); ?></p>
