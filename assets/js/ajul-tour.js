@@ -44,13 +44,5 @@
             if (tour)
                 ajulTourManager.start(tour);
         });
-        // var $startTourButton = $('#ajul-tour-start').click(function(e) {
-        //     e.preventDefault();
-
-        //     ajulTourManager.start();
-        // });
-
-        // if (AjulTourSettings.start)
-        //     $startTourButton.click();
     });
 }(jQuery, this));
