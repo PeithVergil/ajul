@@ -1,5 +1,9 @@
 <?php namespace Ajul;
 
+// Prevent direct access.
+if (!defined('ABSPATH'))
+    exit;
+
 /**
  * Register front-end CSS files.
  *
